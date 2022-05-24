@@ -12,6 +12,10 @@ void show() {
   print("Voce vai gastar um total de $valorFinal");
   var valorFrete = calcularValorFrete(valorCompra: 400);
   print(valorFrete);
+  var quantidadeRemovida = removerProdutoCarrinho(quantidadeItenRemover: 5);
+  print(quantidadeRemovida);
+  var parcelasCartao = calcularParcelasCompra(1200, 5);
+  print("O valor de cada parcela é $parcelasCartao reais");
 }
 
 void validarValor(double valor) {
@@ -57,3 +61,19 @@ String calcularValorFrete({required double valorCompra}) {
     return "O frete é 80 Reais";
   }
 }
+
+String removerProdutoCarrinho(
+    {required int quantidadeItenRemover, int quantidadeItenCarrinho = 5}) {
+  int remover = quantidadeItenCarrinho - quantidadeItenRemover;
+  if (quantidadeItenRemover > quantidadeItenCarrinho) {
+    return "Voçê não pode remover mais produtos do que possui no carrinho";
+  } else {
+    return "Voçê removeu $quantidadeItenRemover itens, agora possui $remover itens no carrinho";
+  }
+}
+
+double calcularParcelasCompra(double valorTotal, int quantidadeParcelas) {
+  double valorParcelas = valorTotal / quantidadeParcelas;
+  return valorParcelas;
+}
+
