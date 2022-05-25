@@ -42,7 +42,7 @@ double valorComJuros(
     double percentualJurosDia = 1}) {
   validarValor(valorProduto);
 
-  double totalJuros = diasAtraso * percentualJurosDia;
+  var totalJuros = diasAtraso * percentualJurosDia;
   return valorProduto + totalJuros;
 }
 
