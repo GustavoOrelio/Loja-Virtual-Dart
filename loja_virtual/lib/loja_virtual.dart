@@ -102,8 +102,8 @@ double margemLucroBrutoMensal(
 
 double margemLucroProdutoUnitario(
     {required double valorDeVendaProduto,
-    required double ValorDeCompraProduto}) {
-  var lucroProduto = valorDeVendaProduto - ValorDeCompraProduto;
+    required double valorDeCompraProduto}) {
+  var lucroProduto = valorDeVendaProduto - valorDeCompraProduto;
   var margemLucroProduto = (lucroProduto / valorDeVendaProduto) * 100;
   return margemLucroProduto;
 }
