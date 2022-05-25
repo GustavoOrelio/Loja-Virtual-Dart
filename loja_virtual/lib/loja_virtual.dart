@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math';
 
 void show() {
@@ -6,16 +5,29 @@ void show() {
   print("O valor a ser pago junto com juros é $valorTotalComJuros");
   var valorTotalComDesconto = valorComDesconto(120.00, 10);
   print("O valor com desconto é $valorTotalComDesconto");
-  var bingo = geradorNumerosBingo();
-  print("Os numeros sorteados para o bingo são $bingo");
   var valorFinal = valorFinalCompra(120, 5);
   print("Voce vai gastar um total de $valorFinal");
   var valorFrete = calcularValorFrete(valorCompra: 400);
   print(valorFrete);
   var quantidadeRemovida = removerProdutoCarrinho(quantidadeItenRemover: 5);
   print(quantidadeRemovida);
-  var parcelasCartao = calcularParcelasCompra(1200, 5);
-  print("O valor de cada parcela é $parcelasCartao reais");
+  var parcelasCartao = calcularValorParcelaCompra(
+      valorTotal: 1200,
+      quantidadeParcelas: 5,
+      diasAtraso: 10,
+      jurosAtrasoPorDia: 0.10);
+  print("O valor de cada parcela é $parcelasCartao reais\n");
+
+  //Funções para os admistradores da loja calcular o lucro de vendas
+  print("***Esses dados aparecerá apenas para os admistradores***");
+  var lucroBruto = margemLucroBrutoMensal(
+      valorTotalProdutosVendidos: 20000, valorTotalGastosComProdutos: 14000);
+  print("A margem de lucro bruto do mes é $lucroBruto%");
+  var lucroPorProduto = margemLucroBrutoMensal(
+      valorTotalProdutosVendidos: 300, valorTotalGastosComProdutos: 150);
+  print("A margem de lucro do produto é $lucroPorProduto%");
+  var precoVenda = calcularPrecoVendaProduto(150);
+  print("O valor para venda é $precoVenda reais");
 }
 
 void validarValor(double valor) {
@@ -37,14 +49,6 @@ double valorComJuros(
 double valorComDesconto(double valorProduto, double percentualDesconto) {
   validarValor(valorProduto);
   return valorProduto - percentualDesconto;
-}
-
-/*A função a seguir foi criado pensando em gerar numeros aleatorios para um bingo na qual os 
-clientes que tiverem todos os numeros na cartela terão um desconto maior na proxima compra*/
-String geradorNumerosBingo() {
-  var gerar = Random();
-  var bingo = new List.generate(12, (_) => gerar.nextInt(100));
-  return "$bingo";
 }
 
 double valorFinalCompra(double valorProduto,
@@ -72,8 +76,41 @@ String removerProdutoCarrinho(
   }
 }
 
-double calcularParcelasCompra(double valorTotal, int quantidadeParcelas) {
-  double valorParcelas = valorTotal / quantidadeParcelas;
-  return valorParcelas;
+double calcularValorParcelaCompra(
+    {required double valorTotal,
+    required int quantidadeParcelas,
+    int diasAtraso = 0,
+    double jurosAtrasoPorDia = 0}) {
+  var valorParcelas = valorTotal / quantidadeParcelas;
+
+  if (diasAtraso <= 0) {
+    return valorParcelas;
+  } else {
+    var valorJuros = diasAtraso * jurosAtrasoPorDia;
+    var valorTotalComJuros = valorParcelas + valorJuros;
+    return valorTotalComJuros;
+  }
 }
 
+double margemLucroBrutoMensal(
+    {required double valorTotalProdutosVendidos,
+    required double valorTotalGastosComProdutos}) {
+  var lucroBruto = valorTotalProdutosVendidos - valorTotalGastosComProdutos;
+  var margemLucro = (lucroBruto / valorTotalProdutosVendidos) * 100;
+  return margemLucro;
+}
+
+double margemLucroProdutoUnitario(
+    {required double valorDeVendaProduto,
+    required double ValorDeCompraProduto}) {
+  var lucroProduto = valorDeVendaProduto - ValorDeCompraProduto;
+  var margemLucroProduto = (lucroProduto / valorDeVendaProduto) * 100;
+  return margemLucroProduto;
+}
+
+double calcularPrecoVendaProduto(double valorPagoProduto,
+    [double percentualAcrescimo = 0.5]) {
+  var calculoPrecoVenda = valorPagoProduto * percentualAcrescimo;
+  var precoVenda = valorPagoProduto + calculoPrecoVenda;
+  return precoVenda;
+}
