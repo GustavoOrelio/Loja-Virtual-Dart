@@ -80,7 +80,7 @@ double calcularValorParcelaCompra(
     {required double valorTotal,
     required int quantidadeParcelas,
     int diasAtraso = 0,
-    double jurosAtrasoPorDia = 0}) {
+    double jurosAtrasoPorDia = 0.01}) {
   var valorParcelas = valorTotal / quantidadeParcelas;
 
   if (diasAtraso <= 0) {
